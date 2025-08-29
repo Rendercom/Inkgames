@@ -1,0 +1,35 @@
+local button = Instance.new("TextButton")
+button.Parent = script.Parent
+button.Text = "TP to Coords"
+button.Size = UDim2.new(0, 100, 0, 50)
+button.Position = UDim2.new(0, 0, 0, 0)
+button.TextColor3 = Color3.new(1, 1, 1)
+button.BackgroundColor3 = Color3.new(0, 0, 0)
+button.Font = Enum.Font.SourceSans
+button.TextSize = 14
+
+-- Teleport function
+local function tpToCoords()
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+    humanoidRootPart.CFrame = CFrame.new(-46, 1024, 126)
+end
+
+-- Cooldown tracking
+local lastClick = 0
+local cooldown = 0.5 -- seconds
+
+-- Button click
+button.MouseButton1Click:Connect(function()
+    local now = os.clock()
+    if now - lastClick < cooldown then
+        return -- too fast, block it
+    end
+    lastClick = now
+
+    tpToCoords()
+    button.Text = "TPping..."
+    task.wait(2)
+    button.Text = "TP to Coords"
+end)
